@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
@@ -42,7 +43,9 @@ function initialPassport(passport) {
     try {
       const db = mongoInstance.getDB();
       const userCollection = db.collection("users");
-      const user = await userCollection.findOne({ _id: id });
+      
+      const userId = new ObjectId(id);
+      const user = await userCollection.findOne({ _id: userId });
       done(null, user);
     } catch (error) {
       done(error);
